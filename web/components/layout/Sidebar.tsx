@@ -21,7 +21,11 @@ const TABS: Array<{ id: SidebarTab; icon: React.ElementType; label: string }> = 
   { id: "settings", icon: Settings, label: "Settings" },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export function Sidebar({ onNavigate }: SidebarProps) {
   const {
     sidebarOpen,
     sidebarWidth,
@@ -76,17 +80,20 @@ export function Sidebar() {
   const handleTabClick = (id: SidebarTab) => {
     if (id === "settings") {
       openSettings();
+      onNavigate?.();
       return;
     }
     if (!sidebarOpen) toggleSidebar();
     setSidebarTab(id);
+    onNavigate?.();
   };
 
   return (
     <motion.aside
       className={cn(
-        "hidden md:flex flex-col h-full bg-surface-900 border-r border-surface-800",
+        "flex flex-col h-full bg-surface-900 border-r border-surface-800",
         "relative flex-shrink-0 z-20",
+        onNavigate ? "w-full" : "hidden md:flex",
         isResizing && "select-none"
       )}
       animate={{ width: sidebarOpen ? sidebarWidth : COLLAPSED_WIDTH }}

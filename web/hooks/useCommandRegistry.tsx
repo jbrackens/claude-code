@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { MutableRefObject, ReactNode } from "react";
 import type { Command } from "@/lib/shortcuts";
 
 const RECENT_MAX = 5;
@@ -17,7 +18,7 @@ interface CommandRegistryContextValue {
   /** Live list of all registered commands for UI rendering */
   commands: Command[];
   /** Ref always pointing to the latest commands list — use in event handlers */
-  commandsRef: React.MutableRefObject<Command[]>;
+  commandsRef: MutableRefObject<Command[]>;
   registerCommand: (cmd: Command) => () => void;
   /** Run a command by id and record it as recently used */
   runCommand: (id: string) => void;
@@ -50,7 +51,7 @@ const CommandRegistryContext = createContext<CommandRegistryContextValue>({
 export function CommandRegistryProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const [commands, setCommands] = useState<Command[]>([]);
   const commandsRef = useRef<Command[]>([]);

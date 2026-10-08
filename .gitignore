@@ -43,3 +43,7 @@ tmp/
 temp/
 
 
+
+# Next.js generated
+web/next-env.d.ts
+web/tsconfig.tsbuildinfo

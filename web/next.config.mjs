@@ -1,27 +1,26 @@
-import type { NextConfig } from "next";
 import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
-const nextConfig: NextConfig = {
+/** @type {import("next").NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
   experimental: {
     typedRoutes: true,
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "@radix-ui/react-tooltip"],
+    optimizePackageImports: [
+      "lucide-react",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-tooltip",
+    ],
   },
-
-  // Compress responses
   compress: true,
-
-  // Image optimization
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60,
   },
-
-  // Static asset caching headers
   async headers() {
     return [
       {
@@ -38,9 +37,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-
   webpack(config, { isServer }) {
-    // Web Worker support
     config.module.rules.push({
       test: /\.worker\.(ts|js)$/,
       use: [
@@ -54,7 +51,6 @@ const nextConfig: NextConfig = {
       ],
     });
 
-    // Ignore node-specific modules in browser bundle
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
